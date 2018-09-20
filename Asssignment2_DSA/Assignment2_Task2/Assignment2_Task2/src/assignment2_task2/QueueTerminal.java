@@ -59,7 +59,7 @@ public class QueueTerminal<E> extends QueueAbstractClass<E> implements QueueInte
     }
     
       @Override
-    public void printQueue(int queueID) {
+    public void printQueue(String queueID) {
         if (sizeQueue>0)
         {
             System.out.println("There are "+this.sizeQueue+" Customers at Terminal " +queueID+" :");

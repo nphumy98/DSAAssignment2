@@ -15,5 +15,5 @@ public interface QueueInterface<E> {
     public E peek();
     public boolean isEmpty();
     public int size();
-    public void printQueue(int queueID);
+    public void printQueue(String queueID);
 }

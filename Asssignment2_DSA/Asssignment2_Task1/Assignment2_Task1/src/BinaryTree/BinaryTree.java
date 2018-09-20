@@ -278,7 +278,8 @@ public class BinaryTree<E> extends AbstractBinaryTree<E> implements BinaryTreeIn
             if (checkCharacter(postfixExpression.charAt(i))==1) // if that character is variable
             {
                 System.out.println("Variable ["+postfixExpression.charAt(i)+"] detected. Please give the value from 0...9");
-                String variableValue= Assignment2_Task1.keyboard.nextLine();
+                int intVariableValue= checkInput();
+                String variableValue=Integer.toString(intVariableValue);
                 traversePostOrderExpression+=variableValue;
             }
             else
@@ -288,6 +289,60 @@ public class BinaryTree<E> extends AbstractBinaryTree<E> implements BinaryTreeIn
         }
         return this.traversePostOrderExpression;
     }
+    
+    //this method make sure the input of user is always from 0...9 for variable
+    private static int checkInput () //should we try catch?
+    {
+        //initilise the variables
+        int maxOption=9;
+        boolean isValidSelection = true;
+        String stringToCheck = "";
+        int returnvalue = -1 ;
+
+        do
+       {
+           do
+           {
+               //read in the selection
+               stringToCheck = Assignment2_Task1.keyboard.nextLine();
+               stringToCheck=stringToCheck.trim();//trim the String
+               if (stringToCheck.length()==1)
+               {
+                   char charNumber= stringToCheck.charAt(0);
+                   if (charNumber < '0' || charNumber > '9')
+                   {
+                       System.out.println("Wrong input, please enter a single digit number from 0...9");
+                       isValidSelection=false;
+                       break;
+                   }
+                   else
+                   {
+                       isValidSelection=true;
+                   }
+
+               }
+               else
+               {
+                   stringToCheck="-1";
+                   System.out.println("Wrong input, please enter a single digit number from 0...9");
+                   isValidSelection=false;
+                   break;
+               }
+           } while (!isValidSelection);
+
+               try
+               {
+                   //handel input that is not letters or is a number that is to long
+                   returnvalue= Integer.valueOf(stringToCheck);
+               }
+               catch (NumberFormatException e)
+               {
+                   returnvalue = -1;
+               }         
+       } while(returnvalue < 0 || returnvalue > maxOption);
+        return returnvalue;
+    }
+    
     //getter and setter
     public String getInfixExpression() {
         return infixExpression;
@@ -312,5 +367,4 @@ public class BinaryTree<E> extends AbstractBinaryTree<E> implements BinaryTreeIn
     public void setTraversePostOrderExpression(String traversePostOrderExpression) {
         this.traversePostOrderExpression = traversePostOrderExpression;
     }
-    
 }
