@@ -15,4 +15,5 @@ public interface BinaryTreeInterface<E> {
     public void preOrderTraverse(NodeTree root);
     public void inOrderTraverse(NodeTree root);
     public void postOrderTraverse(NodeTree root);
+    public String postOrderTraverseString(NodeTree root);
 }

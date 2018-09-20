@@ -43,7 +43,7 @@ public class Assignment2_Task1 {
             aTree.postOrderTraverse(aTree.getRoot());
             System.out.println("");
             double result=aTree.evaluateExpression();
-            if (aTree.getPostfixExpressionWithValue().equals("")==false) // if no divide by zero detected
+            if (aTree.getTraversePostOrderExpression().equals("")==false) // if no divide by zero detected
             {
                 System.out.println("The result: "+result);  
             }

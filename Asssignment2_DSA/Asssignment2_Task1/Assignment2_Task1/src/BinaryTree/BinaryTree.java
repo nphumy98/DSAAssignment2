@@ -7,6 +7,7 @@ package BinaryTree;
 
 import Stack.StackTask1;
 import assignment2_task1.Assignment2_Task1;
+import com.sun.tools.javac.util.Assert;
 
 /**
  *
@@ -16,15 +17,19 @@ public class BinaryTree<E> extends AbstractBinaryTree<E> implements BinaryTreeIn
     
     private String infixExpression=""; //present infixExpression
     private String postfixExpressionWithValue=""; //infixExpression with value of variable
+    private String traversePostOrderExpression="";//this string is supposed to be equal with postfixExpressionwithValue
     //constructor
     public BinaryTree(String infixExpression)
     {
+        Assert.checkNonNull(infixExpression); //check the expression not null before initialise tree
+        Assert.check(infixExpression.length()>0);// check the expression lenbth>0 before intialise tree
         this.setInfixExpression(infixExpression);
         this.setRoot(null);
     }
     
     public BinaryTree(NodeTree root)
     {
+        Assert.checkNonNull(root); //check root not null before intialise tree
         this.setRoot(root);
     }
 
@@ -49,7 +54,7 @@ public class BinaryTree<E> extends AbstractBinaryTree<E> implements BinaryTreeIn
         System.out.print(root.getData()+" ");
         inOrderTraverse(root.getRightNode());
     }
-
+    
     @Override
     public void postOrderTraverse(NodeTree root) {
         if (root==null)
@@ -59,6 +64,22 @@ public class BinaryTree<E> extends AbstractBinaryTree<E> implements BinaryTreeIn
         postOrderTraverse(root.getLeftNode());
         postOrderTraverse(root.getRightNode());
         System.out.print(root.getData()+" ");
+    }
+
+    @Override
+    public String postOrderTraverseString(NodeTree root) {
+        if (root==null)
+        {
+            return "";
+        }
+        else
+        {
+            postOrderTraverseString(root.getLeftNode());
+            postOrderTraverseString(root.getRightNode());
+            postfixExpressionWithValue+=root.getData();
+            return postfixExpressionWithValue;
+        }
+        
     }
 
     //this method convert infix Expression to postfix Expression
@@ -198,7 +219,7 @@ public class BinaryTree<E> extends AbstractBinaryTree<E> implements BinaryTreeIn
         takeVariable(); // read and return value for variable in string
         double result=0;
         int checkCharacter=0;
-        char[] charArray = postfixExpressionWithValue.toCharArray();
+        char[] charArray = traversePostOrderExpression.toCharArray();
         StackTask1<Double> aStack= new StackTask1<Double>();
         //scan the postfix
         for(int i=0;i<charArray.length;i++)
@@ -235,7 +256,7 @@ public class BinaryTree<E> extends AbstractBinaryTree<E> implements BinaryTreeIn
                     else // if divide by zero detected
                     {
                         System.out.println("Divide by zero detected while evaluating the expression! Your expression input is not good");
-                        this.postfixExpressionWithValue="";
+                        this.traversePostOrderExpression="";
                         return 0;
                     }
                     
@@ -250,21 +271,22 @@ public class BinaryTree<E> extends AbstractBinaryTree<E> implements BinaryTreeIn
     public String takeVariable()
     {
         this.postfixExpressionWithValue="";
-        String postfixExpression= infixToPostFix(this.infixExpression);
+        String postfixExpression= postOrderTraverseString(this.getRoot()); //post order traverse to get the postfix
+        this.traversePostOrderExpression="";
         for(int i=0;i<postfixExpression.length();i++)
         {
             if (checkCharacter(postfixExpression.charAt(i))==1) // if that character is variable
             {
                 System.out.println("Variable ["+postfixExpression.charAt(i)+"] detected. Please give the value from 0...9");
                 String variableValue= Assignment2_Task1.keyboard.nextLine();
-                postfixExpressionWithValue+=variableValue;
+                traversePostOrderExpression+=variableValue;
             }
             else
             {
-                postfixExpressionWithValue+=Character.toString(postfixExpression.charAt(i)); //add character to postfix
+                traversePostOrderExpression+=Character.toString(postfixExpression.charAt(i)); //add character to postfix
             }
         }
-        return this.postfixExpressionWithValue;
+        return this.traversePostOrderExpression;
     }
     //getter and setter
     public String getInfixExpression() {
@@ -282,6 +304,13 @@ public class BinaryTree<E> extends AbstractBinaryTree<E> implements BinaryTreeIn
     public void setPostfixExpressionWithValue(String postfixExpressionWithValue) {
         this.postfixExpressionWithValue = postfixExpressionWithValue;
     }
-    
+
+    public String getTraversePostOrderExpression() {
+        return traversePostOrderExpression;
+    }
+
+    public void setTraversePostOrderExpression(String traversePostOrderExpression) {
+        this.traversePostOrderExpression = traversePostOrderExpression;
+    }
     
 }
